@@ -15,38 +15,34 @@ export const goodsFromServer = [
   'Garlic',
 ];
 
-function sortBy(status, arr) {
+function sortBy(arr, status, isReversed) {
   const sortedArr = [...arr];
 
   switch (status) {
     case 'by-alphabetically':
-      return sortedArr.sort((a, b) => a.localeCompare(b));
-
+      sortedArr.sort((a, b) => a.localeCompare(b));
+      break;
     case 'by-length':
-      return sortedArr.sort((a, b) => a.length - b.length);
-
+      sortedArr.sort((a, b) => a.length - b.length);
+      break;
     default:
-      return sortedArr;
   }
+
+  if (isReversed) {
+    sortedArr.reverse();
+  }
+
+  return sortedArr;
 }
 
 export const App = () => {
   const [status, setStatus] = useState(null);
   const [isReversed, setIsReversed] = useState(false);
 
-  const goods = status ? sortBy(status, goodsFromServer) : [...goodsFromServer];
-
-  if (isReversed) {
-    goods.reverse();
-  }
+  const goods = sortBy(goodsFromServer, status, isReversed);
 
   const handleSort = newStatus => {
-    if (status === newStatus) {
-      return;
-    }
-
     setStatus(newStatus);
-    setIsReversed(false);
   };
 
   const handleReverse = () => {
